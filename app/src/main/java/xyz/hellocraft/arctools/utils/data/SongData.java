@@ -11,7 +11,8 @@ public class SongData {
     private int rating_ftr;
     private int rating_byd;
 
-    public SongData(){}
+    public SongData() {
+    }
 
     @Override
     public String toString() {

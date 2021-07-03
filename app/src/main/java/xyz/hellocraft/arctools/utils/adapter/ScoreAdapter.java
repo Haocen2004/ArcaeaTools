@@ -43,13 +43,13 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.MyViewHolder
             holder.textViewNum.setText(" ");
             holder.textViewSongName.setText(scoreData.getSongData().getName() + " - " + scoreData.getDiffType());
             holder.textViewScore.setText("AvgScore: " + scoreData.getScore());
-            holder.textViewPtt.setText("AvgPtt: "+scoreData.getPtt());
+            holder.textViewPtt.setText("AvgPtt: " + scoreData.getPtt());
 
         } else {
             holder.textViewNum.setText(position + "");
             holder.textViewSongName.setText(scoreData.getSongData().getName() + " - " + scoreData.getDiffType());
             holder.textViewScore.setText("Score: " + scoreData.getScore());
-            holder.textViewPtt.setText("ptt: " + scoreData.getSongData().getRating(scoreData.getDifficulty()) / 10 + "->" + scoreData.getPtt());
+            holder.textViewPtt.setText("ptt: " + scoreData.getSongData().getRating(scoreData.getDifficulty()) / 10.0 + "->" + scoreData.getPtt());
         }
 //        holder.imageViewAvatar.setImageURI(Uri.parse(sponsorData.getAvatarImgUrl()));
 //        Glide.with(activity).load(sponsorData.getAvatarImgUrl()).circleCrop().into(holder.imageViewAvatar);

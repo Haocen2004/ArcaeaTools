@@ -14,7 +14,7 @@ import xyz.hellocraft.arctools.utils.data.ScoreData;
 public class ScoreRepo {
     private Context mContext;
     private SQLiteDatabase db;
-    private final String TAG="ScoreRepo";
+    private final String TAG = "ScoreRepo";
     private List<ScoreData> scoreDataList;
 
 
@@ -30,34 +30,33 @@ public class ScoreRepo {
 
     public ScoreRepo(Context context) {
         mContext = context;
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(context,"st3",null,1);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(context, "st3", null, 1);
         db = dataBaseHelper.getReadableDatabase();
     }
 
     public List<ScoreData> getAllScores() {
-        if (scoreDataList == null) {
-            Log.d(TAG, "Reading Scores From Database...");
-            scoreDataList = new ArrayList<>();
-            if (db.isOpen()) {
-                Cursor cursor = db.rawQuery("select * from scores", null);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(mContext, "arcsong.db", null, 1);
+        db = dataBaseHelper.getReadableDatabase();
+        Log.d(TAG, "Reading Scores From Database...");
+        scoreDataList = new ArrayList<>();
+        if (db.isOpen()) {
+            Cursor cursor = db.rawQuery("select * from scores", null);
 
-                while (cursor.moveToNext()) {
-                    ScoreData scoreData = new ScoreData();
-                    scoreData.setSid(cursor.getString(cursor.getColumnIndex("songId")));
-                    scoreData.setScore(cursor.getInt((cursor.getColumnIndex("score"))));
-                    scoreData.setShinyPerfectCount(cursor.getInt((cursor.getColumnIndex("shinyPerfectCount"))));
-                    scoreData.setPerfectCount(cursor.getInt((cursor.getColumnIndex("perfectCount"))));
-                    scoreData.setFarCount(cursor.getInt((cursor.getColumnIndex("nearCount"))));
-                    scoreData.setLostCount(cursor.getInt((cursor.getColumnIndex("missCount"))));
-                    scoreData.setDifficulty(cursor.getInt((cursor.getColumnIndex("songDifficulty"))));
-                    scoreDataList.add(scoreData);
+            while (cursor.moveToNext()) {
+                ScoreData scoreData = new ScoreData();
+                scoreData.setSid(cursor.getString(cursor.getColumnIndex("songId")));
+                scoreData.setScore(cursor.getInt((cursor.getColumnIndex("score"))));
+                scoreData.setShinyPerfectCount(cursor.getInt((cursor.getColumnIndex("shinyPerfectCount"))));
+                scoreData.setPerfectCount(cursor.getInt((cursor.getColumnIndex("perfectCount"))));
+                scoreData.setFarCount(cursor.getInt((cursor.getColumnIndex("nearCount"))));
+                scoreData.setLostCount(cursor.getInt((cursor.getColumnIndex("missCount"))));
+                scoreData.setDifficulty(cursor.getInt((cursor.getColumnIndex("songDifficulty"))));
+                scoreDataList.add(scoreData);
 
-                }
-                Log.d(TAG,"Scores Readied, Total "+ scoreDataList.size() +" record(s).");
-                cursor.close();
             }
+            Log.d(TAG, "Scores Readied, Total " + scoreDataList.size() + " record(s).");
+            cursor.close();
         }
-
         return scoreDataList;
     }
 }

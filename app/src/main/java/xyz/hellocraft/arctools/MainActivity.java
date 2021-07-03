@@ -1,5 +1,8 @@
 package xyz.hellocraft.arctools;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,14 +40,17 @@ public class MainActivity extends AppCompatActivity {
     private ScoreRepo scoreRepo;
     private RecyclerView recyclerViewSp;
     private ScoreAdapter scoreAdapter;
+    private Activity activity;
 
-    Handler cpHandle = new Handler(getMainLooper()) {
+    @SuppressLint("HandlerLeak")
+    Handler cpHandle = new Handler() {
+
         @Override
         public void handleMessage(@NonNull Message msg) {
 
             haveRoot = RootKit.haveRoot();
             if (!haveRoot) {
-                AlertDialog.Builder normalDialog = new AlertDialog.Builder(getApplicationContext());
+                AlertDialog.Builder normalDialog = new AlertDialog.Builder(activity);
                 normalDialog.setTitle("设备没有Root");
                 normalDialog.setMessage("本app依赖root权限来读取arcaea存档\n\n你也可以手动将st3文件放入data/data/xyz.hellocraft.arctools/databases/文件夹");
                 normalDialog.setPositiveButton("我已知晓",
@@ -68,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
                             e.printStackTrace();
                             scoreRepo = null;
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                                AlertDialog.Builder normalDialog = new AlertDialog.Builder(getApplicationContext());
+                                AlertDialog.Builder normalDialog = new AlertDialog.Builder(activity);
                                 normalDialog.setTitle("检测到Android 11或更高");
-                                normalDialog.setMessage("存档复制失败\n\n请可以手动将st3文件放入data/data/xyz.hellocraft.arctools/databases/文件夹");
+                                normalDialog.setMessage("存档复制失败\n\n请手动将st3文件放入data/data/xyz.hellocraft.arctools/databases/文件夹");
                                 normalDialog.setPositiveButton("我已知晓",
                                         (dialog, which) -> {
                                             dialog.dismiss();
@@ -92,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.activity = this;
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -104,6 +111,21 @@ public class MainActivity extends AppCompatActivity {
             }
             Map<Double, ScoreData> pttMap = new TreeMap<>();
             Map<String, SongData> songDataMap = songRepo.getAllSongs();
+            try {
+                scoreRepo.getAllScores();
+            } catch (Exception e) {
+                AlertDialog.Builder normalDialog = new AlertDialog.Builder(activity);
+                normalDialog.setTitle("存档复制失败");
+                normalDialog.setMessage("在当前设备需要手动将st3文件放入data/data/xyz.hellocraft.arctools/databases/文件夹");
+                normalDialog.setPositiveButton("我已知晓",
+                        (dialog, which) -> {
+                            dialog.dismiss();
+//                            System.exit(100001);
+                        });
+                normalDialog.setCancelable(false);
+                normalDialog.show();
+                return;
+            }
             for (ScoreData score : scoreRepo.getAllScores()) {
 
                 String sid = score.getSid();

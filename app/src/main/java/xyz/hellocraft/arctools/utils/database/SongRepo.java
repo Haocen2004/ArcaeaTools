@@ -14,8 +14,8 @@ public class SongRepo {
 
     private Context mContext;
     private SQLiteDatabase db;
-    private final String TAG="SongRepo";
-    private Map<String,SongData> songDataMap;
+    private final String TAG = "SongRepo";
+    private Map<String, SongData> songDataMap;
 
 
     private static SongRepo INSTANCE;
@@ -30,33 +30,32 @@ public class SongRepo {
 
     public SongRepo(Context context) {
         mContext = context;
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(context,"arcsong.db",null,1);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(context, "arcsong.db", null, 1);
         db = dataBaseHelper.getReadableDatabase();
     }
 
-    public Map<String,SongData> getAllSongs(){
+    public Map<String, SongData> getAllSongs() {
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(mContext, "arcsong.db", null, 1);
+        db = dataBaseHelper.getReadableDatabase();
+        Log.d(TAG, "Reading Song List From Database...");
+        songDataMap = new HashMap<>();
+        if (db.isOpen()) {
+            Cursor cursor = db.rawQuery("select * from songs", null);
+            while (cursor.moveToNext()) {
+                SongData songData = new SongData();
+                String sid = cursor.getString(cursor.getColumnIndex("sid"));
+                songData.setSid(sid);
+                songData.setName(cursor.getString(cursor.getColumnIndex("name_en")));
+                songData.setRating_pst(cursor.getInt(cursor.getColumnIndex("rating_pst")));
+                songData.setRating_prs(cursor.getInt(cursor.getColumnIndex("rating_prs")));
+                songData.setRating_ftr(cursor.getInt(cursor.getColumnIndex("rating_ftr")));
+                songData.setRating_byd(cursor.getInt(cursor.getColumnIndex("rating_byn")));
 
-        if (songDataMap == null) {
-            Log.d(TAG,"Reading Song List From Database...");
-            songDataMap = new HashMap<>();
-            if(db.isOpen()) {
-                Cursor cursor = db.rawQuery("select * from songs",null);
-                while (cursor.moveToNext()){
-                    SongData songData = new SongData();
-                    String sid = cursor.getString(cursor.getColumnIndex("sid"));
-                    songData.setSid(sid);
-                    songData.setName(cursor.getString(cursor.getColumnIndex("name_en")));
-                    songData.setRating_pst(cursor.getInt(cursor.getColumnIndex("rating_pst")));
-                    songData.setRating_prs(cursor.getInt(cursor.getColumnIndex("rating_prs")));
-                    songData.setRating_ftr(cursor.getInt(cursor.getColumnIndex("rating_ftr")));
-                    songData.setRating_byd(cursor.getInt(cursor.getColumnIndex("rating_byn")));
-
-                    songDataMap.put(sid,songData);
-                }
-
-                Log.d(TAG,"Song List Readied, Total "+ songDataMap.size() +" song(s).");
-                cursor.close();
+                songDataMap.put(sid, songData);
             }
+
+            Log.d(TAG, "Song List Readied, Total " + songDataMap.size() + " song(s).");
+            cursor.close();
         }
 
         return songDataMap;

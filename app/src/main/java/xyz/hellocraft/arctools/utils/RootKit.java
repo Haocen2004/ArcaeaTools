@@ -3,9 +3,9 @@ package xyz.hellocraft.arctools.utils;
 
 import android.util.Log;
 
-        import java.io.DataInputStream;
-        import java.io.DataOutputStream;
-        import java.io.IOException;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 public class RootKit {
 

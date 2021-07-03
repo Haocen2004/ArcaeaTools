@@ -32,7 +32,8 @@ public class ScoreData {
         this.ptt = ptt;
     }
 
-    public ScoreData() {}
+    public ScoreData() {
+    }
 
     public String getSid() {
         return sid;
@@ -88,18 +89,18 @@ public class ScoreData {
 
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
-        switch (difficulty){
+        switch (difficulty) {
             case 0:
-                diffType="pst";
+                diffType = "pst";
                 break;
             case 1:
-                diffType="prs";
+                diffType = "prs";
                 break;
             case 2:
-                diffType="ftr";
+                diffType = "ftr";
                 break;
             case 3:
-                diffType="byd";
+                diffType = "byd";
                 break;
         }
     }

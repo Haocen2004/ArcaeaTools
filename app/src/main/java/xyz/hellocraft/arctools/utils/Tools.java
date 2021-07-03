@@ -11,7 +11,7 @@ import xyz.hellocraft.arctools.utils.data.ScoreData;
 import xyz.hellocraft.arctools.utils.data.SongData;
 
 public class Tools {
-    private static final String TAG="Tools";
+    private static final String TAG = "Tools";
 
     public static double getPtt(ScoreData scoreData) {
         SongData songData = scoreData.getSongData();
@@ -21,11 +21,11 @@ public class Tools {
         int score = scoreData.getScore();
         double ptt;
         if (score < 9800000) {
-            ptt = (double)rating/10.0 + (double)(score - 9500000) / 300000;
+            ptt = (double) rating / 10.0 + (double) (score - 9500000) / 300000;
         } else if (score < 10000000) {
-            ptt = (double)rating/10.0 + 1.0 + (double)(score - 9800000) / 200000;
+            ptt = (double) rating / 10.0 + 1.0 + (double) (score - 9800000) / 200000;
         } else {
-            ptt = (double)rating/10.0 + 2.0;
+            ptt = (double) rating / 10.0 + 2.0;
         }
         if (ptt <= 0.0) {
             ptt = 0.0;
@@ -36,7 +36,6 @@ public class Tools {
 
     public static void releaseFiles(Context context, String oldPath, String newPath) {
         try {
-            Log.d("releaseFiles","copy "+oldPath+" to "+newPath);
             String fileNames[] = context.getAssets().list(oldPath);
             if (fileNames.length > 0) {
                 File file = new File(newPath);
@@ -49,6 +48,7 @@ public class Tools {
                 if (newFile.exists() && newPath.contains("st3")) {
                     return;
                 }
+                Log.d("releaseFiles", "copy " + oldPath + " to " + newPath);
                 InputStream is = context.getAssets().open(oldPath);
                 FileOutputStream fos = new FileOutputStream(newFile);
                 byte[] buffer = new byte[1024];
