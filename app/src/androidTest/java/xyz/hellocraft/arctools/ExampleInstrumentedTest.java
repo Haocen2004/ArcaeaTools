@@ -1,4 +1,4 @@
-package xyz.hellocraft.arcaeatools;
+package xyz.hellocraft.arctools;
 
 import android.content.Context;
 
