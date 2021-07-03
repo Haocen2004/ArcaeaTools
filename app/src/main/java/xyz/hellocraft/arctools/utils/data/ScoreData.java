@@ -8,13 +8,14 @@ public class ScoreData {
     private int farCount;
     private int lostCount;
     private int difficulty;
-    private float ptt;
+    private double ptt;
+    private String diffType;
 
-    public float getPtt() {
+    public double getPtt() {
         return ptt;
     }
 
-    public void setPtt(float ptt) {
+    public void setPtt(double ptt) {
         this.ptt = ptt;
     }
 
@@ -74,5 +75,37 @@ public class ScoreData {
 
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
+        switch (difficulty){
+            case 0:
+                diffType="pst";
+                break;
+            case 1:
+                diffType="prs";
+                break;
+            case 2:
+                diffType="ftr";
+                break;
+            case 3:
+                diffType="byd";
+                break;
+        }
+    }
+
+    public String getDiffType() {
+        return diffType;
+    }
+
+    @Override
+    public String toString() {
+        return "ScoreData{" +
+                "sid='" + sid + '\'' +
+                ", score=" + score +
+                ", shinyPerfectCount=" + shinyPerfectCount +
+                ", perfectCount=" + perfectCount +
+                ", farCount=" + farCount +
+                ", lostCount=" + lostCount +
+                ", difficulty=" + difficulty +
+                ", ptt=" + ptt +
+                '}';
     }
 }

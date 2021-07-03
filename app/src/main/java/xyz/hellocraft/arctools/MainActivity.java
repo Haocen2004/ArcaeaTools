@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 normalDialog.show();
             } else {
                 Tools.releaseFiles(getApplicationContext(),"database","/data/user/0/xyz.hellocraft.arctools/databases");
-//                RootKit.execRootCmd("cp /data/data/moe.low.arc/files/st3 /data/data/xyz.hellocraft.arctools/databases/");
+                RootKit.execRootCmd("cp /data/user/0/moe.low.arc/files/st3 /data/user/0/xyz.hellocraft.arctools/databases/st3");
                 for (String s : databaseList()) {
                     if (s.equals("arcsong.db")) {
                         songRepo = SongRepo.getINSTANCE(getApplicationContext());
@@ -62,17 +62,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         binding.buttonReadSongs.setOnClickListener(v -> {
-            boolean hasArcData = false;
-            for (String s : databaseList()) {
-                if (s.equals("st3")) {
-                    hasArcData = true;
-                }
-                Log.d(TAG,s);
-            }
-            if (!hasArcData) {
+            if (scoreRepo == null) {
                 if(haveRoot) {
                     Toast.makeText(this,"正在尝试获取Arcaea数据\n请稍后再试",Toast.LENGTH_SHORT).show();
-                    int ret = RootKit.execRootCmdSilent("cp /data/data/moe.low.arc/files/st3 /data/data/xyz.hellocraft.arctools/databases/");
+                    Tools.releaseFiles(getApplicationContext(),"database/st3","/data/user/0/xyz.hellocraft.arctools/databases/st3");
+                    int ret = RootKit.execRootCmdSilent("cp /data/user/0/moe.low.arc/files/st3 /data/user/0/xyz.hellocraft.arctools/databases/st3");
                     if (ret != -1) {
                         Log.i(TAG, "Arc data copied.");
                         Toast.makeText(this,"数据获取成功",Toast.LENGTH_SHORT).show();
@@ -95,21 +89,27 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return;
             }
-            Map<Float,ScoreData> pttMap = new TreeMap<>();
+            Map<Double,ScoreData> pttMap = new TreeMap<>();
             Map<String, SongData> songDataMap = songRepo.getAllSongs();
             for (ScoreData score : scoreRepo.getAllScores()) {
 
                 String sid = score.getSid();
-                SongData songData = songDataMap.get("sid");
-                float ptt = Tools.getPtt(score,songData);
+                SongData songData = songDataMap.get(sid);
+                if (songData == null) {
+                    Log.w(TAG, "songNotFound: "+score.toString());
+                    continue;
+                }
+                double ptt = Tools.getPtt(score,songData);
                 score.setPtt(ptt);
                 pttMap.put(ptt,score);
 
             }
+            pttMap = ((TreeMap)pttMap).descendingMap();
             int i =0;
-            for (Float aFloat : pttMap.keySet()) {
-                if (i>30) break;
-                Log.d(TAG,pttMap.get(aFloat).getSid()+":"+aFloat);
+            for (Double key : pttMap.keySet()) {
+//                if (i>30) break;
+                ScoreData scoreData = pttMap.get(key);
+                Log.d(TAG,scoreData.getSid()+"-"+scoreData.getDiffType()+"-"+scoreData.getScore()+":"+key);
                 i++;
             }
 
