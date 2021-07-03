@@ -1,5 +1,7 @@
 package xyz.hellocraft.arctools.utils.data;
 
+import android.util.Log;
+
 public class SongData {
 
     private String sid;
@@ -53,6 +55,20 @@ public class SongData {
 
     public String getName() {
         return name;
+    }
+
+    public int getRating(int difficulty) {
+        switch (difficulty) {
+            case 0:
+                return rating_pst;
+            case 1:
+                return rating_prs;
+            case 2:
+                return rating_ftr;
+            case 3:
+                return rating_byd;
+        }
+        return -1;
     }
 
     public int getRating_prs() {

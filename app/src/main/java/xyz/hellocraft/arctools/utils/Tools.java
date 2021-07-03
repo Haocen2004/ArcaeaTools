@@ -13,32 +13,13 @@ import xyz.hellocraft.arctools.utils.data.SongData;
 public class Tools {
     private static final String TAG="Tools";
 
-    public static double getPtt(ScoreData scoreData, SongData songData) {
+    public static double getPtt(ScoreData scoreData) {
+        SongData songData = scoreData.getSongData();
 //        Log.d(TAG, "getPtt: "+scoreData.toString());
 //        Log.d(TAG, "getPtt: "+songData.toString());
-        int rating;
+        int rating = songData.getRating(scoreData.getDifficulty());
         int score = scoreData.getScore();
         double ptt;
-        switch (scoreData.getDifficulty()) {
-            case 0:
-                rating = songData.getRating_pst();
-                Log.d(TAG, "getPtt: "+scoreData.getSid()+"-pst-score-"+score+"-rating-"+rating);
-                break;
-            case 1:
-                rating = songData.getRating_prs();
-                Log.d(TAG, "getPtt: "+scoreData.getSid()+"-prs-score-"+score+"-rating-"+rating);
-                break;
-            case 2:
-                rating = songData.getRating_ftr();
-                Log.d(TAG, "getPtt: "+scoreData.getSid()+"-ftr-score-"+score+"-rating-"+rating);
-                break;
-            case 3:
-                rating = songData.getRating_byd();
-                Log.d(TAG, "getPtt: "+scoreData.getSid()+"-byd-score-"+score+"-rating-"+rating);
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + scoreData.getDifficulty());
-        }
         if (score < 9800000) {
             ptt = (double)rating/10.0 + (double)(score - 9500000) / 300000;
         } else if (score < 10000000) {

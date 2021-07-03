@@ -10,6 +10,19 @@ public class ScoreData {
     private int difficulty;
     private double ptt;
     private String diffType;
+    private SongData songData;
+
+    public void setSongData(SongData songData) {
+        this.songData = songData;
+    }
+
+    public SongData getSongData() {
+        return songData;
+    }
+
+    public void setDiffType(String diffType) {
+        this.diffType = diffType;
+    }
 
     public double getPtt() {
         return ptt;
