@@ -2,6 +2,7 @@ package xyz.hellocraft.arctools.utils.database;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -24,7 +25,13 @@ public class ScoreRepo {
         if (INSTANCE == null) {
             INSTANCE = new ScoreRepo(context);
         }
+        INSTANCE.refreshDB();
         return INSTANCE;
+    }
+
+    public void refreshDB() {
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(mContext, "st3", null, 1);
+        db = dataBaseHelper.getReadableDatabase();
     }
 
 
@@ -35,8 +42,6 @@ public class ScoreRepo {
     }
 
     public List<ScoreData> getAllScores() {
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(mContext, "arcsong.db", null, 1);
-        db = dataBaseHelper.getReadableDatabase();
         Log.d(TAG, "Reading Scores From Database...");
         scoreDataList = new ArrayList<>();
         if (db.isOpen()) {
@@ -56,6 +61,8 @@ public class ScoreRepo {
             }
             Log.d(TAG, "Scores Readied, Total " + scoreDataList.size() + " record(s).");
             cursor.close();
+        } else {
+            throw new SQLiteCantOpenDatabaseException();
         }
         return scoreDataList;
     }

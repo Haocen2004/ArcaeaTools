@@ -2,14 +2,11 @@ package xyz.hellocraft.arctools;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -35,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private final String TAG = "MainActivity";
-    private boolean haveRoot = false;
     private SongRepo songRepo;
     private ScoreRepo scoreRepo;
     private RecyclerView recyclerViewSp;
@@ -48,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void handleMessage(@NonNull Message msg) {
 
-            haveRoot = RootKit.haveRoot();
+            boolean haveRoot = RootKit.haveRoot();
             if (!haveRoot) {
                 AlertDialog.Builder normalDialog = new AlertDialog.Builder(activity);
                 normalDialog.setTitle("设备没有Root");
@@ -114,9 +110,10 @@ public class MainActivity extends AppCompatActivity {
             try {
                 scoreRepo.getAllScores();
             } catch (Exception e) {
+                scoreRepo = null;
                 AlertDialog.Builder normalDialog = new AlertDialog.Builder(activity);
-                normalDialog.setTitle("存档复制失败");
-                normalDialog.setMessage("在当前设备需要手动将st3文件放入data/data/xyz.hellocraft.arctools/databases/文件夹");
+                normalDialog.setTitle("存档读取失败");
+                normalDialog.setMessage("请参照arcsong.db设置文件权限、所有者和用户组\n如果文件大小为12kb的话则为复制失败\n需要手动将st3文件放入data/data/xyz.hellocraft.arctools/databases/文件夹\n\n操作完成后请点击重试");
                 normalDialog.setPositiveButton("我已知晓",
                         (dialog, which) -> {
                             dialog.dismiss();
