@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ArcaeaTools.iml" filepath="$PROJECT_DIR$/.idea/modules/ArcaeaTools.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ArcaeaTools.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ArcaeaTools.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GitHub.ArcaeaTools.iml" filepath="$PROJECT_DIR$/.idea/modules/GitHub.ArcaeaTools.iml" />
     </modules>
   </component>
 </project>

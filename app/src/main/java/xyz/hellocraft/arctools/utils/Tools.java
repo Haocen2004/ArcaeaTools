@@ -1,17 +1,49 @@
 package xyz.hellocraft.arctools.utils;
 
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.hjq.toast.ToastUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.List;
 
 import xyz.hellocraft.arctools.utils.data.ScoreData;
 import xyz.hellocraft.arctools.utils.data.SongData;
 
 public class Tools {
     private static final String TAG = "Tools";
+
+
+    public static void openApp(String packageName, Activity activity){
+        PackageManager manager = activity.getPackageManager();
+
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setPackage(packageName);
+
+        List<ResolveInfo> apps = manager.queryIntentActivities(intent,0);
+        if (apps.size() >0) {
+            ResolveInfo ri = apps.get(0);
+
+            String pName = ri.activityInfo.packageName;
+            String cName = ri.activityInfo.name;
+            ComponentName cn = new ComponentName(pName,cName);
+            intent.setComponent(cn);
+            activity.startActivity(intent);
+        } else {
+            ToastUtils.show("找不到包名！");
+        }
+
+    }
 
     public static double getPtt(ScoreData scoreData) {
         SongData songData = scoreData.getSongData();
