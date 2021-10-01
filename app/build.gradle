@@ -3,6 +3,13 @@ plugins {
 }
 
 android {
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "[root]ArcaeaTools-${variant.versionName}.apk"
+        }
+    }
+
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 

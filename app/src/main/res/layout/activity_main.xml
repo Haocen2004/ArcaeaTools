@@ -28,8 +28,7 @@
         android:layout_height="wrap_content"
         android:checked="false"
         android:clickable="false"
-        android:editable="false"
-        android:text="Arcaea State" />
+        android:text="Arcaea Installation" />
 
     <CheckBox
         android:id="@+id/rootCheckBox"
@@ -37,7 +36,6 @@
         android:layout_height="wrap_content"
         android:checked="false"
         android:clickable="false"
-        android:editable="false"
-        android:text="Root State" />
+        android:text="ROOT Permission" />
 
 </LinearLayout>

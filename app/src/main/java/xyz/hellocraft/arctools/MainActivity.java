@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
             binding.arcCheckBox.setChecked(true);
         }
 
-        ToastUtils.show("本app依赖root权限执行绝大多数操作\n请给予Root权限");
         boolean haveRoot = RootKit.haveRoot();
         if (!haveRoot) {
             AlertDialog.Builder normalDialog = new AlertDialog.Builder(this);
@@ -105,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
             normalDialog.setCancelable(false);
             normalDialog.show();
         }
+
+        ToastUtils.show("初始化完成\nPowered By Hao_cen");
     }
 
 }
